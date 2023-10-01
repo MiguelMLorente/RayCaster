@@ -13,7 +13,7 @@ public class Main {
         GLCapabilities capabilities = new GLCapabilities(profile);
         GLCanvas glcanvas = new GLCanvas(capabilities);
 
-        glcanvas.addGLEventListener(new Canvas());
+        glcanvas.addGLEventListener(new Canvas(glcanvas));
         glcanvas.setSize( 400, 400 );
 
         Frame frame = new Frame( "art.Wallpaper" );

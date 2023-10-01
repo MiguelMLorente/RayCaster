@@ -3,7 +3,6 @@ import art.elements.Background;
 import art.elements.PhysicalElement;
 import io.vavr.Tuple2;
 import io.vavr.collection.Set;
-import io.vavr.control.Option;
 import ray.Ray;
 import ray.geometry.Point;
 import ray.geometry.Vector;
@@ -12,15 +11,17 @@ import java.awt.*;
 
 public class Camera {
     private final Point focalPoint = Point.ORIGIN;
-    private final double viewAngle = 15 * 3.141593 / 180;
+    private static final double VIEW_ANGLE = 15 * 3.141593 / 180;
 
-    private final double azimuthStep;
-    private final double altitudeStep;
+    private final double angleStep;
+    private final double horizontalSteps;
+    private final double verticalSteps;
 
 
     Camera(Dimension screenSize) {
-        this.azimuthStep = viewAngle * 2 / screenSize.width;
-        this.altitudeStep = viewAngle * 2 / screenSize.height;
+        this.horizontalSteps = screenSize.width;
+        this.verticalSteps = screenSize.height;
+        this.angleStep = VIEW_ANGLE * 2 / horizontalSteps;
     }
 
     public PhysicalElement observePosition(
@@ -28,8 +29,8 @@ public class Camera {
         int verticalPosition,
         Scene scene
     ) {
-        double azimuth = -viewAngle + azimuthStep * horizontalPosition;
-        double altitude = -viewAngle + altitudeStep * verticalPosition;
+        double azimuth = angleStep * (horizontalPosition - horizontalSteps / 2);
+        double altitude = angleStep * (verticalPosition - verticalSteps / 2);
 
         Ray ray = new Ray(new Vector(
             Math.sin(azimuth),

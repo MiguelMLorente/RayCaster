@@ -1,17 +1,31 @@
 import art.Color;
 import art.Scene;
-import art.elements.PhysicalElement;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
+import com.jogamp.opengl.awt.GLCanvas;
+import lombok.AllArgsConstructor;
 
 import java.awt.*;
 
+@AllArgsConstructor
 public class Canvas implements GLEventListener {
+    private final GLCanvas glCanvas;
+
     @Override
     public void display(GLAutoDrawable drawable) {
+        draw(drawable);
+    }
+
+    public void init(GLAutoDrawable glAutoDrawable) {}
+    public void dispose(GLAutoDrawable glAutoDrawable) {}
+    public void reshape(GLAutoDrawable drawable, int i, int i1, int i2, int i3) {
+        draw(drawable);
+    }
+
+    private void draw(GLAutoDrawable drawable) {
         GL2 gl = drawable.getGL().getGL2();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension screenSize = glCanvas.getSize();
         Camera camera = new Camera(screenSize);
         Scene scene = new Scene();
 
@@ -29,8 +43,4 @@ public class Canvas implements GLEventListener {
         gl.glEnd();
         gl.glFlush();
     }
-
-    public void init(GLAutoDrawable glAutoDrawable) {}
-    public void dispose(GLAutoDrawable glAutoDrawable) {}
-    public void reshape(GLAutoDrawable glAutoDrawable, int i, int i1, int i2, int i3) {}
 }
